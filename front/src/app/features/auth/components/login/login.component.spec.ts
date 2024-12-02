@@ -16,6 +16,8 @@ import { LoginRequest } from '../../interfaces/loginRequest.interface';
 import { AuthService } from '../../services/auth.service';
 import { LoginComponent } from './login.component';
 
+//TODO: La validation des champs est incorrecte (voir les commentaires dans les tests)
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -64,11 +66,12 @@ describe('LoginComponent', () => {
     expect(component.form.invalid).toBe(true); // invalid email
 
     email?.setValue('test@example.com');
+    //si je mets pleins de chiffres ce ne passe pas la validation
     password?.setValue('000001');
-    expect(component.form.invalid).toBe(true); // invalid password 
-
+    expect(component.form.invalid).toBe(true);
+    //mais si je mets un seule chiffre superieur à 3 ça passe
     password?.setValue('3');
-    expect(component.form.valid).toBe(true); // form should be valid now
+    expect(component.form.valid).toBe(true);
   });
 
   it('should call authService.login and sessionService.logIn on valid submit', () => {
