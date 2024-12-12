@@ -1,16 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
+import { environment } from 'src/environments/environment';
 import { LoginRequest } from '../interfaces/loginRequest.interface';
 import { RegisterRequest } from '../interfaces/registerRequest.interface';
-import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private pathService = 'api/auth';
+  private pathService = `${environment.baseUrl}auth`;
 
   constructor(private httpClient: HttpClient) { }
 

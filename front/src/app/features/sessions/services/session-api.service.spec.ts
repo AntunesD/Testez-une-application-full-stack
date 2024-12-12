@@ -32,7 +32,7 @@ describe('SessionApiService', () => {
       expect(sessions).toEqual(mockSessions);
     });
 
-    const req = httpMock.expectOne('api/session');
+    const req = httpMock.expectOne('http://localhost:8080/api/session');
     expect(req.request.method).toBe('GET');
     req.flush(mockSessions);
   });
@@ -45,7 +45,7 @@ describe('SessionApiService', () => {
       expect(session).toEqual(createdSession);
     });
 
-    const req = httpMock.expectOne('api/session');
+    const req = httpMock.expectOne('http://localhost:8080/api/session');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newSession);
     req.flush(createdSession);
@@ -58,7 +58,7 @@ describe('SessionApiService', () => {
       expect(response).toBeNull(); // Assuming the response is empty or null
     });
 
-    const req = httpMock.expectOne(`api/session/${sessionId}`);
+    const req = httpMock.expectOne(`http://localhost:8080/api/session/${sessionId}`);
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
   });
@@ -70,7 +70,7 @@ describe('SessionApiService', () => {
       expect(session).toEqual(updatedSession);
     });
 
-    const req = httpMock.expectOne('api/session/1');
+    const req = httpMock.expectOne('http://localhost:8080/api/session/1');
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(updatedSession);
     req.flush(updatedSession);
@@ -84,7 +84,7 @@ describe('SessionApiService', () => {
       expect(response).toBeUndefined(); // No content expected in response
     });
 
-    const req = httpMock.expectOne(`api/session/1/participate/2`);
+    const req = httpMock.expectOne(`http://localhost:8080/api/session/1/participate/2`);
     expect(req.request.method).toBe('POST');
     req.flush(null);
   });
@@ -99,7 +99,7 @@ describe('SessionApiService', () => {
     });
 
     // Vérification de la requête HTTP
-    const req = httpMock.expectOne(`api/session/1/participate/2`);
+    const req = httpMock.expectOne(`http://localhost:8080/api/session/1/participate/2`);
     expect(req.request.method).toBe('DELETE');
 
     // Envoi de la réponse simulée (réponse vide)

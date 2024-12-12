@@ -1,4 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
+import { NgZone } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -90,8 +91,11 @@ describe('LoginComponent', () => {
     jest.spyOn(sessionService, 'logIn');
     const navigateSpy = jest.spyOn(router, 'navigate');
 
-    component.form.setValue({ email: 'test@example.com', password: '123456' });
-    component.submit();
+    const ngZone = TestBed.inject(NgZone);
+    ngZone.run(() => {
+      component.form.setValue({ email: 'test@example.com', password: '123456' });
+      component.submit();
+    })
 
     expect(authService.login).toHaveBeenCalledWith(loginRequest);
     expect(sessionService.logIn).toHaveBeenCalledWith(sessionInfo);
@@ -106,6 +110,13 @@ describe('LoginComponent', () => {
     component.form.setValue({ email: 'test@example.com', password: '123456' });
     component.submit();
 
-    expect(component.onError).toBe(true);
+    // Forcer Angular à détecter les changements
+    fixture.detectChanges();
+
+    // Sélectionner l'élément et tester son existence
+    const emailError = fixture.nativeElement.querySelector('.error');
+    expect(emailError).not.toBeNull(); // Vérifie que l'élément existe
+    expect(emailError.textContent).toContain('An error occurred'); // Vérifie le texte
   });
+
 });

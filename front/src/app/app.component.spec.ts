@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { expect } from '@jest/globals';
 import { of } from 'rxjs';
 
+import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { SessionService } from './services/session.service';
@@ -50,8 +51,10 @@ describe('AppComponent', () => {
     const routerSpy = jest.spyOn(router, 'navigate');
 
     // Appeler la méthode logout
-    component.logout();
-
+    const ngZone = TestBed.inject(NgZone);
+    ngZone.run(() => {
+      component.logout();
+    });
     // Simuler l'écoulement du temps (comme pour flush())
     flush();
 

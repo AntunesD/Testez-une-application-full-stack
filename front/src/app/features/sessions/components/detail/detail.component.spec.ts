@@ -49,4 +49,6 @@ describe('DetailComponent', () => {
     expect(component.isAdmin).toBe(true);  // admin est défini sur vrai dans mockSessionService
     expect(component.userId).toBe('1');   // id utilisateur est 1 dans mockSessionService
   });
+
+
 });

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from 'src/environments/environment';
 import { Teacher } from '../interfaces/teacher.interface';
 import { TeacherService } from './teacher.service';
 
@@ -37,7 +38,7 @@ describe('TeacherService', () => {
       expect(teachers).toEqual(mockTeachers);
     });
 
-    const req = httpMock.expectOne('api/teacher');
+    const req = httpMock.expectOne(`${environment.baseUrl}teacher`);
     expect(req.request.method).toBe('GET');
     req.flush(mockTeachers); // Simule une réponse avec les données mockées
   });
@@ -50,7 +51,7 @@ describe('TeacherService', () => {
       expect(teacher).toEqual(mockTeacher);
     });
 
-    const req = httpMock.expectOne(`api/teacher/${id}`);
+    const req = httpMock.expectOne(`${environment.baseUrl}teacher/${id}`);
     expect(req.request.method).toBe('GET');
     req.flush(mockTeacher); // Simule une réponse avec une donnée spécifique
   });
@@ -65,7 +66,7 @@ describe('TeacherService', () => {
       }
     });
 
-    const req = httpMock.expectOne(`api/teacher/${id}`);
+    const req = httpMock.expectOne(`${environment.baseUrl}teacher/${id}`);
     req.flush('Teacher not found', { status: 404, statusText: 'Not Found' });
   });
 });

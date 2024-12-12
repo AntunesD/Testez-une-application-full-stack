@@ -3,11 +3,12 @@
 // with Intellisense and code completion in your
 // IDE or Text Editor.
 // ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    customLogin(): Chainable<void>;
+    customSession(sessions?: any[]): Chainable<void>;
+  }
+}
 //
 // function customCommand(param: any): void {
 //   console.warn(param);
@@ -41,3 +42,33 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('customLogin', () => {
+  // Visite la page de login
+  cy.visit('/login');
+
+  // Intercepte la requête POST pour le login avec une réponse mockée
+  cy.intercept('POST', '/api/auth/login', {
+    body: {
+      id: 1,
+      username: 'userName',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      admin: true,
+    },
+  });
+
+  cy.get('input[formControlName=email]').type("yoga@studio.com")
+  cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
+});
+
+
+// Commande pour intercepter les sessions
+Cypress.Commands.add('customSession', (sessions = []) => {
+  cy.intercept(
+    {
+      method: 'GET',
+      url: '/api/session',
+    },
+    sessions
+  ).as('session');
+});

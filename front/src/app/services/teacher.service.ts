@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Teacher } from '../interfaces/teacher.interface';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Teacher } from '../interfaces/teacher.interface';
 })
 export class TeacherService {
 
-  private pathService = 'api/teacher';
+  private pathService = `${environment.baseUrl}teacher`;
 
   constructor(private httpClient: HttpClient) { }
 

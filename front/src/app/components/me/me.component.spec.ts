@@ -8,6 +8,9 @@ import { User } from '../../interfaces/user.interface';
 import { SessionService } from '../../services/session.service';
 import { UserService } from '../../services/user.service';
 
+import { NgZone } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MeComponent } from './me.component';
 
@@ -40,7 +43,7 @@ describe('MeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MeComponent],
-      imports: [HttpClientTestingModule, MatSnackBarModule, NoopAnimationsModule],
+      imports: [HttpClientTestingModule, MatSnackBarModule, NoopAnimationsModule, MatCardModule, MatIconModule],
       providers: [
         { provide: SessionService, useValue: mockSessionService },
         UserService,
@@ -80,11 +83,14 @@ describe('MeComponent', () => {
     const routerSpy = jest.spyOn(router, 'navigate');
     const snackBarSpy = jest.spyOn(component['matSnackBar'], 'open');
 
-    // Appeler la méthode delete
-    component.delete();
+    // Appeler la méthode delete dans NgZone
+    const ngZone = TestBed.inject(NgZone);
+    ngZone.run(() => {
+      component.delete();
+    });
 
-    // Simuler l'écoulement du temps et vider tous les timers
-    flush(); // Cela exécute tous les timers en attente, y compris ceux dans les abonnements
+    // Simuler l'écoulement du temps
+    flush();
 
     // Vérifier que les méthodes ont été appelées
     expect(userService.delete).toHaveBeenCalledWith('1');
@@ -96,5 +102,6 @@ describe('MeComponent', () => {
     );
     expect(routerSpy).toHaveBeenCalledWith(['/']);
   }));
+
 
 });
