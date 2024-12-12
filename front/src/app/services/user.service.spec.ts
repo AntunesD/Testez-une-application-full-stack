@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
+import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/user.interface';
 import { UserService } from './user.service';
 
@@ -46,7 +47,7 @@ describe('UserService', () => {
     });
 
     // Simuler une requête HTTP GET
-    const req = httpMock.expectOne(`api/user/${userId}`);
+    const req = httpMock.expectOne(`${environment.baseUrl}user/${userId}`);
     expect(req.request.method).toBe('GET');
 
     // Simuler une réponse HTTP
@@ -61,7 +62,7 @@ describe('UserService', () => {
     });
 
     // Simuler une requête HTTP DELETE
-    const req = httpMock.expectOne(`api/user/${userId}`);
+    const req = httpMock.expectOne(`${environment.baseUrl}user/${userId}`);
     expect(req.request.method).toBe('DELETE');
 
     // Simuler une réponse HTTP vide (cas courant pour une suppression réussie)

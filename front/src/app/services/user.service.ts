@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { User } from '../interfaces/user.interface';
 })
 export class UserService {
 
-  private pathService = 'api/user';
+  private pathService = `${environment.baseUrl}user`;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -23,14 +23,31 @@ describe('Session Detail Page spec', () => {
       },
     ];
 
-
     // Mock session data and login as admin
-    cy.customSession(sessions)
+    cy.customSession(sessions);
     cy.intercept('GET', '/api/session/2', { body: sessions[0] });
+    // Mock the DELETE request to simulate a 200 response for an admin
+    cy.intercept('DELETE', '/api/session/2', {
+      statusCode: 200,  // Ensure a successful response
+      body: {}          // Empty response body, adjust based on your API
+    }).as('deleteSession');
+
+    // Interception for teacher API
+    cy.intercept('GET', '/api/teacher/1', {
+      body: {
+        id: 1,
+        lastName: 'DELAHAYE',
+        firstName: 'Margot',
+        createdAt: '2024-11-23T11:47:46',
+        updatedAt: '2024-11-23T11:47:46'
+      }
+    }).as('getTeacher');
+
     cy.customLogin();
 
     cy.wait(1000);
     cy.get(':nth-child(1) > .mat-card-actions > :nth-child(1)').click();
+
     // Verify the session title is displayed
     cy.contains('h1', 'Yoga Session').should('be.visible');
 
@@ -53,5 +70,22 @@ describe('Session Detail Page spec', () => {
 
     // If the user is admin, verify the delete button is visible
     cy.get('button').contains('Delete').should('be.visible');
+
+    // Wait for the teacher data to be loaded
+    cy.wait('@getTeacher');
+
+    // Verify teacher's name is displayed correctly
+    cy.contains('Margot DELAHAYE').should('be.visible');
+
+    cy.contains('attendees').should('be.visible');
+
+    // Intercept the delete button click and navigate to /sessions instead
+    cy.get('button').contains('Delete').click();
+
+    // Wait for the DELETE request to be intercepted
+    cy.wait('@deleteSession');
+
+    // Vérifier que le titre "Rentals available" est présent
+    cy.contains('Rentals available');
   });
 });
