@@ -1,18 +1,17 @@
 package com.openclassrooms.starterjwt.IT;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.http.MediaType;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,16 +21,10 @@ public class AuthIntegrationTest extends DatabaseIntegrationTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        // Créer des utilisateurs de test
-        createUser("admin@test.com", "John", "Doe", "password123", false);
-        createUser("user@test.com", "Jane", "Smith", "password456", false);
-    }
-
     // Nouvelle méthode pour créer et connecter un utilisateur
     protected String LoginTestUser() throws Exception {
         // Préparer le JSON de connexion
+        createUser("admin@test.com", "John", "Doe", "password123", false);
         String loginJson = "{\"email\":\"admin@test.com\", \"password\":\"password123\"}";
 
         // Effectuer la connexion et récupérer le token
@@ -54,5 +47,19 @@ public class AuthIntegrationTest extends DatabaseIntegrationTest {
 
         // Vérifier que la réponse contient le token
         assertNotNull(response);
+    }
+
+    // Ajout d'un test pour l'enregistrement d'un utilisateur
+    @Test
+    void testRegisterUser() throws Exception {
+        // Préparer le JSON d'enregistrement
+        String registerJson = "{\"email\":\"newuser@test.com\", \"password\":\"newpassword\", \"firstName\":\"New\", \"lastName\":\"User\"}";
+
+        // Effectuer l'enregistrement
+        mockMvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(registerJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("User registered successfully!"));
     }
 }
