@@ -50,6 +50,8 @@ public class AuthTokenFilterTest {
                 userDetailsService);
     }
 
+    // Test pour vérifier que le filtre authentifie correctement avec un token
+    // valide
     @Test
     void doFilterInternal_WithValidToken_ShouldAuthenticate() throws Exception {
         // Arrange
@@ -67,6 +69,7 @@ public class AuthTokenFilterTest {
         verify(userDetailsService).loadUserByUsername("user@test.com");
     }
 
+    // Test pour vérifier que le filtre ne s'authentifie pas avec un token invalide
     @Test
     void doFilterInternal_WithInvalidToken_ShouldNotAuthenticate() throws Exception {
         // Arrange
@@ -82,6 +85,7 @@ public class AuthTokenFilterTest {
         verify(userDetailsService, never()).loadUserByUsername(anyString());
     }
 
+    // Test pour vérifier que le filtre ne s'authentifie pas sans token
     @Test
     void doFilterInternal_WithNoToken_ShouldNotAuthenticate() throws Exception {
         // Arrange
@@ -95,6 +99,8 @@ public class AuthTokenFilterTest {
         verify(userDetailsService, never()).loadUserByUsername(anyString());
     }
 
+    // Test pour vérifier que le filtre ne s'authentifie pas avec un en-tête
+    // d'autorisation invalide
     @Test
     void doFilterInternal_WithInvalidAuthorizationHeader_ShouldNotAuthenticate() throws Exception {
         // Arrange

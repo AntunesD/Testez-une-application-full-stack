@@ -49,6 +49,7 @@ class AuthControllerTest {
   @MockBean
   private UserRepository userRepository;
 
+  // Test de l'authentification réussie de l'utilisateur
   @Test
   void testAuthenticateUserSuccess() throws Exception {
     // Mock des objets
@@ -97,6 +98,7 @@ class AuthControllerTest {
                 "}"));
   }
 
+  // Test de l'enregistrement réussi d'un nouvel utilisateur
   @Test
   void testRegisterUserSuccess() throws Exception {
     // Mock des objets
@@ -119,6 +121,7 @@ class AuthControllerTest {
         .andExpect(content().json("{\"message\":\"User registered successfully!\"}"));
   }
 
+  // Test de l'enregistrement d'un utilisateur avec un email déjà pris
   @Test
   void testRegisterUserEmailAlreadyTaken() throws Exception {
     // Mock des objets
@@ -135,7 +138,7 @@ class AuthControllerTest {
     mockMvc.perform(post("/api/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(signupRequest)))
-  
+
         .andExpect(status().isBadRequest())
         .andExpect(content().string("{\"message\":\"Error: Email is already taken!\"}"));
   }

@@ -36,12 +36,15 @@ public class UserServiceTest {
         user.setEmail("test@test.com");
     }
 
+    // Test pour vérifier que la méthode delete appelle la méthode deleteById du
+    // repository
     @Test
     void delete_ShouldCallRepositoryDelete() {
         userService.delete(1L);
         verify(userRepository).deleteById(1L);
     }
 
+    // Test pour vérifier que findById retourne un utilisateur existant
     @Test
     void findById_WhenUserExists_ShouldReturnUser() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -52,6 +55,7 @@ public class UserServiceTest {
         assertEquals(user.getId(), result.getId());
     }
 
+    // Test pour vérifier que findById retourne null si l'utilisateur n'existe pas
     @Test
     void findById_WhenUserDoesNotExist_ShouldReturnNull() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());

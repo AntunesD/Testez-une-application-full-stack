@@ -39,6 +39,7 @@ public class TeacherServiceTest {
         teacher.setLastName("Doe");
     }
 
+    // Test pour vérifier que la méthode findAll retourne tous les enseignants
     @Test
     void findAll_ShouldReturnAllTeachers() {
         List<Teacher> teachers = Arrays.asList(teacher);
@@ -51,6 +52,7 @@ public class TeacherServiceTest {
         verify(teacherRepository).findAll();
     }
 
+    // Test pour vérifier que la méthode findById retourne un enseignant existant
     @Test
     void findById_WhenTeacherExists_ShouldReturnTeacher() {
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
@@ -61,6 +63,8 @@ public class TeacherServiceTest {
         assertEquals(teacher.getId(), result.getId());
     }
 
+    // Test pour vérifier que la méthode findById retourne null si l'enseignant
+    // n'existe pas
     @Test
     void findById_WhenTeacherDoesNotExist_ShouldReturnNull() {
         when(teacherRepository.findById(1L)).thenReturn(Optional.empty());

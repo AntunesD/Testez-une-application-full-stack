@@ -32,6 +32,7 @@ public class JwtUtilsTest {
         ReflectionTestUtils.setField(jwtUtils, "jwtExpirationMs", 86400000);
     }
 
+    // Test pour vérifier que le token JWT généré est valide
     @Test
     void generateJwtToken_ShouldReturnValidToken() {
         // Arrange
@@ -47,6 +48,7 @@ public class JwtUtilsTest {
         assertEquals("test@test.com", jwtUtils.getUserNameFromJwtToken(token));
     }
 
+    // Test pour valider un token JWT valide
     @Test
     void validateJwtToken_WithValidToken_ShouldReturnTrue() {
         // Arrange
@@ -58,24 +60,28 @@ public class JwtUtilsTest {
         assertTrue(jwtUtils.validateJwtToken(token));
     }
 
+    // Test pour valider un token JWT invalide
     @Test
     void validateJwtToken_WithInvalidToken_ShouldReturnFalse() {
         // Act & Assert
         assertFalse(jwtUtils.validateJwtToken("invalid.token.here"));
     }
 
+    // Test pour valider un token JWT vide
     @Test
     void validateJwtToken_WithEmptyToken_ShouldReturnFalse() {
         // Act & Assert
         assertFalse(jwtUtils.validateJwtToken(""));
     }
 
+    // Test pour valider un token JWT nul
     @Test
     void validateJwtToken_WithNullToken_ShouldReturnFalse() {
         // Act & Assert
         assertFalse(jwtUtils.validateJwtToken(null));
     }
 
+    // Test pour obtenir le nom d'utilisateur à partir d'un token JWT valide
     @Test
     void getUserNameFromJwtToken_WithValidToken_ShouldReturnUsername() {
         // Arrange

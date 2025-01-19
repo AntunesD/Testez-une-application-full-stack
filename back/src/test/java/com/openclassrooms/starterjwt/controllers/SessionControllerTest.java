@@ -82,6 +82,7 @@ public class SessionControllerTest {
 
     // ========= Tests de récupération (GET) =========
 
+    // Test pour récupérer une session par ID
     @Test
     @WithMockUser
     void findById_ShouldReturnSession() throws Exception {
@@ -93,6 +94,7 @@ public class SessionControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(sessionDto)));
     }
 
+    // Test pour récupérer une session avec un ID invalide
     @Test
     @WithMockUser
     void findById_WithInvalidId_ShouldReturnNotFound() throws Exception {
@@ -102,6 +104,15 @@ public class SessionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    // Test pour récupérer une session avec un format d'ID invalide
+    @Test
+    @WithMockUser
+    void findById_WithInvalidIdFormat_ShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/api/session/invalid"))
+                .andExpect(status().isBadRequest());
+    }
+
+    // Test pour récupérer toutes les sessions
     @Test
     @WithMockUser
     void findAll_ShouldReturnAllSessions() throws Exception {
@@ -115,6 +126,7 @@ public class SessionControllerTest {
 
     // ========= Tests de création (POST) =========
 
+    // Test pour créer une nouvelle session
     @Test
     @WithMockUser
     void create_ShouldReturnCreatedSession() throws Exception {
@@ -131,6 +143,7 @@ public class SessionControllerTest {
 
     // ========= Tests de mise à jour (PUT) =========
 
+    // Test pour mettre à jour une session
     @Test
     @WithMockUser
     void update_ShouldReturnUpdatedSession() throws Exception {
@@ -145,6 +158,7 @@ public class SessionControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(sessionDto)));
     }
 
+    // Test pour mettre à jour une session avec un ID invalide
     @Test
     @WithMockUser
     void update_WithInvalidId_ShouldReturnBadRequest() throws Exception {
@@ -156,6 +170,7 @@ public class SessionControllerTest {
 
     // ========= Tests de suppression (DELETE) =========
 
+    // Test pour supprimer une session
     @Test
     @WithMockUser
     void delete_ShouldReturnOk() throws Exception {
@@ -166,6 +181,7 @@ public class SessionControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // Test pour supprimer une session avec un ID invalide
     @Test
     @WithMockUser
     void delete_WithInvalidId_ShouldReturnNotFound() throws Exception {
@@ -175,6 +191,7 @@ public class SessionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    // Test pour supprimer une session avec un format d'ID invalide
     @Test
     @WithMockUser
     void delete_WithInvalidIdFormat_ShouldReturnBadRequest() throws Exception {
@@ -184,6 +201,7 @@ public class SessionControllerTest {
 
     // ========= Tests de participation =========
 
+    // Test pour participer à une session
     @Test
     @WithMockUser
     void participate_ShouldReturnOk() throws Exception {
@@ -193,6 +211,7 @@ public class SessionControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // Test pour participer à une session avec un ID de session invalide
     @Test
     @WithMockUser
     void participate_WithInvalidSessionId_ShouldReturnBadRequest() throws Exception {
@@ -200,6 +219,7 @@ public class SessionControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    // Test pour participer à une session avec un ID d'utilisateur invalide
     @Test
     @WithMockUser
     void participate_WithInvalidUserId_ShouldReturnBadRequest() throws Exception {
@@ -209,6 +229,7 @@ public class SessionControllerTest {
 
     // ========= Tests d'annulation de participation =========
 
+    // Test pour ne plus participer à une session
     @Test
     @WithMockUser
     void noLongerParticipate_ShouldReturnOk() throws Exception {
@@ -218,6 +239,7 @@ public class SessionControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // Test pour ne plus participer à une session avec un ID de session invalide
     @Test
     @WithMockUser
     void noLongerParticipate_WithInvalidSessionId_ShouldReturnBadRequest() throws Exception {
@@ -225,6 +247,7 @@ public class SessionControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    // Test pour ne plus participer à une session avec un ID d'utilisateur invalide
     @Test
     @WithMockUser
     void noLongerParticipate_WithInvalidUserId_ShouldReturnBadRequest() throws Exception {
@@ -232,17 +255,9 @@ public class SessionControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    // ========= Tests de validation des IDs =========
-
-    @Test
-    @WithMockUser
-    void findById_WithInvalidIdFormat_ShouldReturnBadRequest() throws Exception {
-        mockMvc.perform(get("/api/session/invalid"))
-                .andExpect(status().isBadRequest());
-    }
-
     // ========= Tests d'authentification =========
 
+    // Test pour vérifier l'accès sans authentification
     @Test
     void withoutAuthentication_ShouldReturnUnauthorized() throws Exception {
         mockMvc.perform(get("/api/session/1"))

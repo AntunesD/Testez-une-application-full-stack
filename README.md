@@ -63,6 +63,12 @@ L'application sera accessible sur `http://localhost:4200`
 
 ## Tests
 
+### Résumés des Tests
+
+- [Récapitulatif des Tests Backend](test_summary/back_summary.md)
+- [Récapitulatif des Tests Cypress](test_summary/cypress_summary.md)
+- [Récapitulatif des Tests de Fonctionnalités avec Jest](test_summary/jest_summary.md)
+
 ### Tests Backend
 
 Pour lancer les tests unitaires et générer le rapport de couverture Jacoco :

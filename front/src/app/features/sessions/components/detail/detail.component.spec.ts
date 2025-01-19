@@ -41,7 +41,6 @@ describe('DetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // Nouveau test ajouté : Vérifier l'appel de ngOnInit et l'initialisation des données
   it('should initialize session information on ngOnInit', () => {
     component.ngOnInit();
 

@@ -57,8 +57,7 @@ public class UserControllerTest {
         when(authentication.getPrincipal()).thenReturn(userDetails);
     }
 
-    // Tests pour findById
-
+    // Test pour vérifier que la méthode findById retourne un utilisateur valide
     @Test
     void findById_ValidId_ReturnsUser() {
         // Arrange
@@ -72,6 +71,8 @@ public class UserControllerTest {
         verify(userService).findById(1L);
     }
 
+    // Test pour vérifier que la méthode findById retourne une erreur pour un ID
+    // invalide
     @Test
     void findById_InvalidId_ReturnsBadRequest() {
         // Act
@@ -81,6 +82,8 @@ public class UserControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    // Test pour vérifier que la méthode findById retourne une erreur pour un ID
+    // inexistant
     @Test
     void findById_NonExistentId_ReturnsNotFound() {
         // Arrange
@@ -93,8 +96,8 @@ public class UserControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-    // Tests pour delete
-
+    // Test pour vérifier que la méthode delete retourne un OK pour un utilisateur
+    // autorisé
     @Test
     void delete_ValidIdAndAuthorizedUser_ReturnsOk() {
         // Arrange
@@ -109,6 +112,8 @@ public class UserControllerTest {
         verify(userService).delete(1L);
     }
 
+    // Test pour vérifier que la méthode delete retourne une erreur pour un
+    // utilisateur non autorisé
     @Test
     void delete_UnauthorizedUser_ReturnsUnauthorized() {
         // Arrange
@@ -123,6 +128,8 @@ public class UserControllerTest {
         verify(userService, never()).delete(1L);
     }
 
+    // Test pour vérifier que la méthode delete retourne une erreur pour un ID
+    // invalide
     @Test
     void delete_InvalidId_ReturnsBadRequest() {
         // Act
@@ -133,6 +140,8 @@ public class UserControllerTest {
         verify(userService, never()).delete(anyLong());
     }
 
+    // Test pour vérifier que la méthode delete retourne une erreur pour un ID
+    // inexistant
     @Test
     void delete_NonExistentId_ReturnsNotFound() {
         // Arrange

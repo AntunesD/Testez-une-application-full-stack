@@ -52,6 +52,7 @@ public class SessionServiceTest {
         session.setUsers(new ArrayList<>());
     }
 
+    // Test pour vérifier la création d'une session
     @Test
     void create_ShouldReturnCreatedSession() {
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
@@ -63,12 +64,14 @@ public class SessionServiceTest {
         verify(sessionRepository).save(session);
     }
 
+    // Test pour vérifier que la méthode delete appelle le repository
     @Test
     void delete_ShouldCallRepositoryDelete() {
         sessionService.delete(1L);
         verify(sessionRepository).deleteById(1L);
     }
 
+    // Test pour vérifier que toutes les sessions sont retournées
     @Test
     void findAll_ShouldReturnAllSessions() {
         List<Session> sessions = Arrays.asList(session);
@@ -81,6 +84,7 @@ public class SessionServiceTest {
         verify(sessionRepository).findAll();
     }
 
+    // Test pour vérifier que la session est retournée si elle existe
     @Test
     void getById_WhenSessionExists_ShouldReturnSession() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
@@ -91,6 +95,7 @@ public class SessionServiceTest {
         assertEquals(session.getId(), result.getId());
     }
 
+    // Test pour vérifier que null est retourné si la session n'existe pas
     @Test
     void getById_WhenSessionDoesNotExist_ShouldReturnNull() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
@@ -100,6 +105,7 @@ public class SessionServiceTest {
         assertNull(result);
     }
 
+    // Test pour vérifier que l'utilisateur est ajouté à la session
     @Test
     void participate_WhenSessionAndUserExist_ShouldAddUserToSession() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
@@ -111,6 +117,7 @@ public class SessionServiceTest {
         verify(sessionRepository).save(session);
     }
 
+    // Test pour vérifier qu'une exception est levée si l'utilisateur participe déjà
     @Test
     void participate_WhenUserAlreadyParticipates_ShouldThrowBadRequestException() {
         session.getUsers().add(user);
@@ -120,6 +127,7 @@ public class SessionServiceTest {
         assertThrows(BadRequestException.class, () -> sessionService.participate(1L, 1L));
     }
 
+    // Test pour vérifier qu'une exception est levée si la session n'est pas trouvée
     @Test
     void participate_WhenSessionNotFound_ShouldThrowNotFoundException() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
@@ -127,6 +135,7 @@ public class SessionServiceTest {
         assertThrows(NotFoundException.class, () -> sessionService.participate(1L, 1L));
     }
 
+    // Test pour vérifier que la session est mise à jour
     @Test
     void update_ShouldReturnUpdatedSession() {
         Session updatedSession = new Session();
@@ -143,6 +152,7 @@ public class SessionServiceTest {
         verify(sessionRepository).save(updatedSession);
     }
 
+    // Test pour vérifier que l'utilisateur est retiré de la session
     @Test
     void noLongerParticipate_WhenSessionAndUserExist_ShouldRemoveUserFromSession() {
         session.getUsers().add(user);
@@ -154,6 +164,8 @@ public class SessionServiceTest {
         verify(sessionRepository).save(session);
     }
 
+    // Test pour vérifier qu'une exception est levée si l'utilisateur ne participe
+    // pas
     @Test
     void noLongerParticipate_WhenUserNotParticipating_ShouldThrowBadRequestException() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
@@ -161,6 +173,7 @@ public class SessionServiceTest {
         assertThrows(BadRequestException.class, () -> sessionService.noLongerParticipate(1L, 1L));
     }
 
+    // Test pour vérifier qu'une exception est levée si la session n'est pas trouvée
     @Test
     void noLongerParticipate_WhenSessionNotFound_ShouldThrowNotFoundException() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
